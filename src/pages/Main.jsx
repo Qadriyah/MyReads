@@ -48,6 +48,7 @@ class Main extends Component {
   };
 
   render() {
+    const { history } = this.props;
     const currentlyReading = this.getCategory("currentlyReading");
     const wantToRead = this.getCategory("wantToRead");
     const read = this.getCategory("read");
@@ -95,9 +96,7 @@ class Main extends Component {
           </div>
         </div>
         <div className="open-search">
-          <button onClick={() => this.props.history.push("/search")}>
-            Add a book
-          </button>
+          <button onClick={() => history.push("/search")}>Add a book</button>
         </div>
       </div>
     );
