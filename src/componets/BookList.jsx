@@ -11,9 +11,13 @@ const BookList = (props) => {
             return (
               <li key={book.id}>
                 <BookItem
-                  backgroundImage={book.imageLinks.thumbnail}
-                  bookTitle={book.title}
-                  bookAuthors={book.authors.join(", ")}
+                  backgroundImage={
+                    book && book.imageLinks ? book.imageLinks.thumbnail : ""
+                  }
+                  bookTitle={book ? book.title : ""}
+                  bookAuthors={
+                    book && book.authors ? book.authors.join(", ") : ""
+                  }
                   moveToShelf={moveToShelf}
                   book={book}
                 />

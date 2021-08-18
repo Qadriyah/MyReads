@@ -95,7 +95,7 @@ class Main extends Component {
           </div>
         </div>
         <div className="open-search">
-          <button onClick={() => this.setState({ showSearchPage: true })}>
+          <button onClick={() => this.props.history.push("/search")}>
             Add a book
           </button>
         </div>
