@@ -3,17 +3,22 @@ import BookItem from "./BookItem";
 
 const BookList = (props) => {
   const { books } = props;
-  console.log(books, "??????");
 
   return (
     <ol className="books-grid">
-      {books.map((book) => {
-        return (
-          <li key={book.id}>
-            <BookItem backgroundImage={book.imageLinks.thumbnail} />
-          </li>
-        );
-      })}
+      {books && books.length > 0
+        ? books.map((book) => {
+            return (
+              <li key={book.id}>
+                <BookItem
+                  backgroundImage={book.imageLinks.thumbnail}
+                  bookTitle={book.title}
+                  bookAuthors={book.authors.join(", ")}
+                />
+              </li>
+            );
+          })
+        : null}
     </ol>
   );
 };

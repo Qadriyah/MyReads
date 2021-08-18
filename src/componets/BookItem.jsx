@@ -7,7 +7,7 @@ class BookItem extends Component {
   };
 
   render() {
-    const { backgroundImage } = this.props;
+    const { backgroundImage, bookTitle, bookAuthors } = this.props;
 
     return (
       <div className="book">
@@ -32,8 +32,8 @@ class BookItem extends Component {
             </select>
           </div>
         </div>
-        <div className="book-title">To Kill a Mockingbird</div>
-        <div className="book-authors">Harper Lee</div>
+        <div className="book-title">{bookTitle}</div>
+        <div className="book-authors">{bookAuthors}</div>
       </div>
     );
   }
@@ -41,6 +41,8 @@ class BookItem extends Component {
 
 BookItem.propTypes = {
   backgroundImage: PropTypes.string.isRequired,
+  bookTitle: PropTypes.string.isRequired,
+  bookAuthors: PropTypes.string.isRequired,
   // categories: PropTypes.array.isRequired,
 };
 
