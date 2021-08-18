@@ -2,12 +2,29 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class BookItem extends Component {
-  state = {
-    categories: ["Currently Reading", "Want to Read", "Read", "None"],
+  renderOptions = () => {
+    return [
+      { key: "currentlyReading", value: "Currently Reading" },
+      { key: "wantToRead", value: "Want to Read" },
+      { key: "read", value: "Read" },
+      { key: "none", value: "None" },
+    ].map((option) => {
+      return (
+        <option key={option.key} value={option.key}>
+          {option.value}
+        </option>
+      );
+    });
   };
 
   render() {
-    const { backgroundImage, bookTitle, bookAuthors } = this.props;
+    const {
+      backgroundImage,
+      bookTitle,
+      bookAuthors,
+      moveToShelf,
+      book,
+    } = this.props;
 
     return (
       <div className="book">
@@ -21,14 +38,14 @@ class BookItem extends Component {
             }}
           />
           <div className="book-shelf-changer">
-            <select>
+            <select
+              value={book.shelf}
+              onChange={(event) => moveToShelf(event, book)}
+            >
               <option value="move" disabled>
                 Move to...
               </option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
+              {this.renderOptions()}
             </select>
           </div>
         </div>
@@ -43,7 +60,6 @@ BookItem.propTypes = {
   backgroundImage: PropTypes.string.isRequired,
   bookTitle: PropTypes.string.isRequired,
   bookAuthors: PropTypes.string.isRequired,
-  // categories: PropTypes.array.isRequired,
 };
 
 export default BookItem;

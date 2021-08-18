@@ -2,7 +2,7 @@ import React from "react";
 import BookItem from "./BookItem";
 
 const BookList = (props) => {
-  const { books } = props;
+  const { books, moveToShelf } = props;
 
   return (
     <ol className="books-grid">
@@ -14,6 +14,8 @@ const BookList = (props) => {
                   backgroundImage={book.imageLinks.thumbnail}
                   bookTitle={book.title}
                   bookAuthors={book.authors.join(", ")}
+                  moveToShelf={moveToShelf}
+                  book={book}
                 />
               </li>
             );

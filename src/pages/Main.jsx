@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getAll } from "../BooksAPI";
+import { getAll, update } from "../BooksAPI";
 import BookList from "../componets/BookList";
 
 class Main extends Component {
@@ -13,6 +13,12 @@ class Main extends Component {
     });
   }
 
+  /**
+   * @description Extracts a particular category from the entire list of books
+   * @param {*} books
+   * @param {*} bookShelf
+   * @returns
+   */
   getCategory = (bookShelf) => {
     const { books } = this.state;
     return books && books.length > 0
@@ -20,7 +26,32 @@ class Main extends Component {
       : [];
   };
 
+  /**
+   * @description Moves a book between shelves
+   * @param {*} event
+   * @param {*} book
+   */
+  moveToShelf = (event, book) => {
+    const shelf = event.target.value;
+    update(book, shelf).then(() => {
+      this.setState((prevState) => {
+        const updatedBooks = prevState.books.map((item) => {
+          if (item.id === book.id) {
+            item.shelf = shelf;
+            return item;
+          }
+          return item;
+        });
+        return { books: updatedBooks };
+      });
+    });
+  };
+
   render() {
+    const currentlyReading = this.getCategory("currentlyReading");
+    const wantToRead = this.getCategory("wantToRead");
+    const read = this.getCategory("read");
+
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -31,19 +62,34 @@ class Main extends Component {
             <div className="bookshelf">
               <h2 className="bookshelf-title">Currently Reading</h2>
               <div className="bookshelf-books">
-                <BookList books={this.getCategory("currentlyReading")} />
+                {currentlyReading && currentlyReading.length > 0 ? (
+                  <BookList
+                    books={currentlyReading}
+                    moveToShelf={this.moveToShelf}
+                  />
+                ) : (
+                  <div>Shelf is empty</div>
+                )}
               </div>
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
               <div className="bookshelf-books">
-                <BookList books={this.getCategory("wantToRead")} />
+                {wantToRead && wantToRead.length > 0 ? (
+                  <BookList books={wantToRead} moveToShelf={this.moveToShelf} />
+                ) : (
+                  <div>Shelf is empty</div>
+                )}
               </div>
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Read</h2>
               <div className="bookshelf-books">
-                <BookList books={this.getCategory("read")} />
+                {read && read.length > 0 ? (
+                  <BookList books={read} moveToShelf={this.moveToShelf} />
+                ) : (
+                  <div>Shelf is empty</div>
+                )}
               </div>
             </div>
           </div>
