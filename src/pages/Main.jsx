@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { getAll, update } from "../BooksAPI";
-import BookShelf from "../componets/BookShelf";
+import BookShelf from "../components/BookShelf";
 
 class Main extends Component {
   state = {
@@ -14,16 +15,20 @@ class Main extends Component {
   }
 
   /**
-   * @description Extracts a particular category from the entire list of books
-   * @param {*} books
-   * @param {*} bookShelf
+   * @description Prepares an array of book shelves
    * @returns
    */
-  getCategory = (bookShelf) => {
+  getBookShelves = () => {
     const { books } = this.state;
-    return books && books.length > 0
-      ? books.filter((book) => book.shelf === bookShelf)
-      : [];
+    return ["currentlyReading", "wantToRead", "read"].map((bookShelf) => {
+      return {
+        title: bookShelf,
+        books:
+          books && books.length > 0
+            ? books.filter((book) => book.shelf === bookShelf)
+            : [],
+      };
+    });
   };
 
   /**
@@ -48,10 +53,7 @@ class Main extends Component {
   };
 
   render() {
-    const { history } = this.props;
-    const currentlyReading = this.getCategory("currentlyReading");
-    const wantToRead = this.getCategory("wantToRead");
-    const read = this.getCategory("read");
+    const bookShelves = this.getBookShelves();
 
     return (
       <div className="list-books">
@@ -60,25 +62,22 @@ class Main extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <BookShelf
-              books={currentlyReading}
-              title="Currently Reading"
-              moveToShelf={this.moveToShelf}
-            />
-            <BookShelf
-              books={wantToRead}
-              title="Want to Read"
-              moveToShelf={this.moveToShelf}
-            />
-            <BookShelf
-              books={read}
-              title="Read"
-              moveToShelf={this.moveToShelf}
-            />
+            {bookShelves.map((bookShelf) => {
+              return (
+                <BookShelf
+                  key={bookShelf.title}
+                  books={bookShelf.books}
+                  title={bookShelf.title}
+                  moveToShelf={this.moveToShelf}
+                />
+              );
+            })}
           </div>
         </div>
         <div className="open-search">
-          <button onClick={() => history.push("/search")}>Add a book</button>
+          <Link to="/search">
+            <button>Add a book</button>
+          </Link>
         </div>
       </div>
     );

@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import BookList from "./BookList";
 
-const BookShelf = (props) => {
-  const { books, moveToShelf, title } = props;
+const BookShelf = ({ books, moveToShelf, title }) => {
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{title}</h2>
@@ -20,7 +19,15 @@ const BookShelf = (props) => {
 };
 
 BookShelf.propTypes = {
-  books: PropTypes.array.isRequired,
+  books: PropTypes.arrayOf(
+    PropTypes.shape({
+      shelf: PropTypes.string,
+      imageLinks: PropTypes.shape({ thumbnail: PropTypes.string }),
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      authors: PropTypes.arrayOf(PropTypes.string),
+    })
+  ),
   moveToShelf: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
