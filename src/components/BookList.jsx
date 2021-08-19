@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import BookItem from "./BookItem";
 
-const BookList = (props) => {
-  const { books, moveToShelf } = props;
-
+const BookList = ({ books, moveToShelf }) => {
   return (
     <ol className="books-grid">
       {books && books.length > 0
@@ -31,7 +29,15 @@ const BookList = (props) => {
 };
 
 BookList.propTypes = {
-  books: PropTypes.array.isRequired,
+  books: PropTypes.arrayOf(
+    PropTypes.shape({
+      shelf: PropTypes.string,
+      imageLinks: PropTypes.shape({ thumbnail: PropTypes.string }),
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      authors: PropTypes.arrayOf(PropTypes.string),
+    })
+  ),
   moveToShelf: PropTypes.func.isRequired,
 };
 
