@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getAll } from "../BooksAPI";
-import BookList from "../componets/BookList";
+import { getAll, update } from "../BooksAPI";
+import BookShelf from "../componets/BookShelf";
 
 class Main extends Component {
   state = {
@@ -13,6 +13,12 @@ class Main extends Component {
     });
   }
 
+  /**
+   * @description Extracts a particular category from the entire list of books
+   * @param {*} books
+   * @param {*} bookShelf
+   * @returns
+   */
   getCategory = (bookShelf) => {
     const { books } = this.state;
     return books && books.length > 0
@@ -20,7 +26,33 @@ class Main extends Component {
       : [];
   };
 
+  /**
+   * @description Moves a book between shelves
+   * @param {*} event
+   * @param {*} book
+   */
+  moveToShelf = (event, book) => {
+    const shelf = event.target.value;
+    update(book, shelf).then(() => {
+      this.setState((prevState) => {
+        const updatedBooks = prevState.books.map((item) => {
+          if (item.id === book.id) {
+            item.shelf = shelf;
+            return item;
+          }
+          return item;
+        });
+        return { books: updatedBooks };
+      });
+    });
+  };
+
   render() {
+    const { history } = this.props;
+    const currentlyReading = this.getCategory("currentlyReading");
+    const wantToRead = this.getCategory("wantToRead");
+    const read = this.getCategory("read");
+
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -28,30 +60,25 @@ class Main extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Currently Reading</h2>
-              <div className="bookshelf-books">
-                <BookList books={this.getCategory("currentlyReading")} />
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Want to Read</h2>
-              <div className="bookshelf-books">
-                <BookList books={this.getCategory("wantToRead")} />
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Read</h2>
-              <div className="bookshelf-books">
-                <BookList books={this.getCategory("read")} />
-              </div>
-            </div>
+            <BookShelf
+              books={currentlyReading}
+              title="Currently Reading"
+              moveToShelf={this.moveToShelf}
+            />
+            <BookShelf
+              books={wantToRead}
+              title="Want to Read"
+              moveToShelf={this.moveToShelf}
+            />
+            <BookShelf
+              books={read}
+              title="Read"
+              moveToShelf={this.moveToShelf}
+            />
           </div>
         </div>
         <div className="open-search">
-          <button onClick={() => this.setState({ showSearchPage: true })}>
-            Add a book
-          </button>
+          <button onClick={() => history.push("/search")}>Add a book</button>
         </div>
       </div>
     );
