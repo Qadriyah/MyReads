@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { getAll, update } from "../BooksAPI";
-import BookList from "../componets/BookList";
+import BookShelf from "../componets/BookShelf";
 
 class Main extends Component {
   state = {
@@ -60,39 +60,21 @@ class Main extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Currently Reading</h2>
-              <div className="bookshelf-books">
-                {currentlyReading && currentlyReading.length > 0 ? (
-                  <BookList
-                    books={currentlyReading}
-                    moveToShelf={this.moveToShelf}
-                  />
-                ) : (
-                  <div>Shelf is empty</div>
-                )}
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Want to Read</h2>
-              <div className="bookshelf-books">
-                {wantToRead && wantToRead.length > 0 ? (
-                  <BookList books={wantToRead} moveToShelf={this.moveToShelf} />
-                ) : (
-                  <div>Shelf is empty</div>
-                )}
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Read</h2>
-              <div className="bookshelf-books">
-                {read && read.length > 0 ? (
-                  <BookList books={read} moveToShelf={this.moveToShelf} />
-                ) : (
-                  <div>Shelf is empty</div>
-                )}
-              </div>
-            </div>
+            <BookShelf
+              books={currentlyReading}
+              title="Currently Reading"
+              moveToShelf={this.moveToShelf}
+            />
+            <BookShelf
+              books={wantToRead}
+              title="Want to Read"
+              moveToShelf={this.moveToShelf}
+            />
+            <BookShelf
+              books={read}
+              title="Read"
+              moveToShelf={this.moveToShelf}
+            />
           </div>
         </div>
         <div className="open-search">

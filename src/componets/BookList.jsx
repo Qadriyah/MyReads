@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import BookItem from "./BookItem";
 
 const BookList = (props) => {
@@ -27,6 +28,11 @@ const BookList = (props) => {
         : null}
     </ol>
   );
+};
+
+BookList.propTypes = {
+  books: PropTypes.array.isRequired,
+  moveToShelf: PropTypes.func.isRequired,
 };
 
 export default BookList;
